@@ -1,0 +1,14 @@
+.container {
+    height: 80px;
+    .links {
+        gap: 10px;
+    }
+    .logout {
+        background-color: #53c28b;
+        padding: 5px;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+}
