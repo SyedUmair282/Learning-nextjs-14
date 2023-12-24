@@ -1,1 +1,35 @@
-.container {}
+.container {
+    .items {
+        margin-top: 5px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        .item {
+            border: 3px solid #bbb;
+            width: 220px;
+            height: 300px;
+            position: relative;
+            background-size: cover !important;
+            &:nth-child(1) {
+                background: url('/illustration.png');
+            }
+            &:nth-child(2) {
+                background: url('/websites.jpg');
+            }
+            &:nth-child(3) {
+                background: url('/apps.jpg');
+            }
+            &:hover {
+                opacity: 0.4;
+            }
+            .title {
+                position: absolute;
+                bottom: 3px;
+                right: 5px;
+                font-size: 30px;
+                font-weight: bold;
+            }
+        }
+    }
+}

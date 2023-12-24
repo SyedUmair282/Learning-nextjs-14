@@ -5,16 +5,16 @@
         position: relative;
         .pic {
             object-fit: contain;
-            animation: move 3s ease infinite;
+            // animation: move 3s ease infinite;
         }
-        @keyframes move {
-            from {
-                transform: translateY(-3px);
-            }
-            to {
-                transform: translateY(0px) scale(1.03);
-            }
-        }
+        // @keyframes move {
+        //     from {
+        //         transform: translateY(-3px);
+        //     }
+        //     to {
+        //         transform: translateY(0px);
+        //     }
+        // }
     }
     .form {
         flex: 1;
