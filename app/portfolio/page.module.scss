@@ -21,7 +21,10 @@
                 background: url('/apps.jpg');
             }
             &:hover {
-                opacity: 0.4;
+                // opacity: 0.4;
+                color: #53c28b;
+                border: 3px solid #53c28b;
+                border-radius: 3px;
             }
             .title {
                 position: absolute;
