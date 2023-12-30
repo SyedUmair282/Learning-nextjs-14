@@ -1,1 +1,17 @@
-.container {}
+.container {
+    .imgContainer {
+        position: relative;
+        height: 200px;
+        width: 25%;
+        .img {
+            object-fit: fill;
+            border-radius: 3px;
+        }
+    }
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 75%;
+    }
+}
