@@ -2,7 +2,8 @@
 import React from 'react';
 import {navbarLinks} from '@/types/allTypes';
 import Link from 'next/link';
-import styles from './navbar.module.scss'
+import styles from './navbar.module.scss';
+import Toggle from '../toggle/toggle';
 const links:navbarLinks[]=[
   {
     id: 1,
@@ -40,6 +41,7 @@ const Navbar = () => {
     <div className={`${styles.container} w-full flex flex-row items-center justify-between`}>
       <Link href={"/"} className={`font-bold text-2xl`}>Nextian</Link>
       <div className={`flex flex-row items-center ${styles.links}`}>
+        <Toggle/>
         {links.map((item:navbarLinks)=>{
           return (
             <Link href={item.url} key={item.id}>{item.title}</Link>

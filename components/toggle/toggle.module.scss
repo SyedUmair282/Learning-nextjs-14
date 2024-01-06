@@ -1,0 +1,22 @@
+.main {
+    min-width: 44px;
+    height: 24px;
+    border: 1.5px solid #53c28b70;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+    position: relative;
+    .icon {
+        font-size: 14px;
+    }
+    .ball {
+        height: 17px;
+        width: 17px;
+        background-color: #53c28b;
+        border-radius: 50%;
+        position: absolute;
+        // left: 25px;
+    }
+}
