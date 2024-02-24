@@ -5,31 +5,43 @@ import Image from 'next/image'
 import { getDatabase, ref, set, query, orderByChild, equalTo, get, push, child } from "firebase/database";
 import { app } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
+import { userInfo } from '@/types/allTypes';
 
-const Register = () => {
-  const [userData,setUserData] = useState<any>(null)
-  const [loading,setLoading] = useState<any>(false)
-  const [error,setError] = useState<any>(false)
+const Register:React.FC = () => {
+  const [userData,setUserData] = useState<userInfo|null>(null)
+  const [loading,setLoading] = useState<boolean>(false)
+  const [error,setError] = useState<boolean>(false)
   const router = useRouter();
 
   const register = async (e:any) => {
     e.preventDefault();
     setLoading(true);
-    const db = getDatabase(app);
-    const userQuery = query(ref(db, 'users'), orderByChild('email'), equalTo(userData.email));
-    const snapshot = await get(userQuery);
-    if(snapshot.val()===null){
-      const newUserKey = push(child(ref(db), "users")).key;
-      await set(ref(db, "users/" + newUserKey), {
-      username: userData?.username,
-      email: userData?.email,
-      password: userData?.password,
-    });
-    router.push("/dashboard");
-    }else{
-      alert("This email is already registered")
+    if (
+      userData !== null &&
+      userData.email &&
+      userData.username &&
+      userData.password
+    ) {
+      const db = getDatabase(app);
+      const userQuery = query(
+        ref(db, "users"),
+        orderByChild("email"),
+        equalTo(userData.email)
+      );
+      const snapshot = await get(userQuery);
+      if (snapshot.val() === null) {
+        const newUserKey = push(child(ref(db), "users")).key;
+        await set(ref(db, "users/" + newUserKey), {
+          username: userData?.username,
+          email: userData?.email,
+          password: userData?.password,
+        });
+        router.push("/dashboard");
+      } else {
+        alert("This email is already registered");
+      }
+      setLoading(false);
     }
-    setLoading(false);
     
   }
 
