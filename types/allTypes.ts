@@ -10,7 +10,7 @@ export type themeCtx={
 }
 
 export type userInfo={
-    username:string,
-    email:string,
-    password:string
+    username?:string,
+    email?:string,
+    password?:string
 }

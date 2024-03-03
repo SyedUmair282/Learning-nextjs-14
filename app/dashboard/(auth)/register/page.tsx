@@ -1,16 +1,17 @@
 "use client"
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import Image from 'next/image'
 // import { db } from '@/firebase/config'
 import { getDatabase, ref, set, query, orderByChild, equalTo, get, push, child } from "firebase/database";
 import { app } from '@/firebase/config';
-import { useRouter } from 'next/navigation';
 import { userInfo } from '@/types/allTypes';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Register:React.FC = () => {
   const [userData,setUserData] = useState<userInfo|null>(null)
   const [loading,setLoading] = useState<boolean>(false)
-  const [error,setError] = useState<boolean>(false)
   const router = useRouter();
 
   const register = async (e:any) => {
@@ -30,20 +31,26 @@ const Register:React.FC = () => {
       );
       const snapshot = await get(userQuery);
       if (snapshot.val() === null) {
-        const newUserKey = push(child(ref(db), "users")).key;
-        await set(ref(db, "users/" + newUserKey), {
+        const newUserKey:any = push(child(ref(db), "users")).key;
+        const user = await set(ref(db, "users/" + newUserKey), {
           username: userData?.username,
           email: userData?.email,
           password: userData?.password,
         });
-        router.push("/dashboard");
+        Cookies.set('user_id',newUserKey);
+        Cookies.set('user_name',userData?.username);        
+        router.push("/dashboard",{shallow:false});
+        router.refresh(); 
+        
       } else {
         alert("This email is already registered");
       }
       setLoading(false);
+      setUserData(null);
     }
     
   }
+  
 
   return (
     <div>
@@ -52,9 +59,8 @@ const Register:React.FC = () => {
         <input required placeholder='username' onChange={(e)=>setUserData({...userData,username:e.target.value})} className='bg-transparent outline-none text-gray-300 border-2 border-solid border-gray-300 p-2 text-base font-bold rounded' type="text" name="username" id="username" />
         <input required placeholder='email address' onChange={(e)=>setUserData({...userData,email:e.target.value})} className='bg-transparent outline-none text-gray-300 border-2 border-solid border-gray-300 p-2 text-base font-bold rounded' type="email" name="email" id="email" />
         <input required placeholder='password' onChange={(e)=>setUserData({...userData,password:e.target.value})} className='bg-transparent outline-none border-2 border-solid border-gray-300 p-2 text-base font-bold rounded' type="password" name="password" id="password" />
-        <button type='submit' className='bg-green-500 rounded p-2	border-0 text-xs' disabled={loading}>{!loading ? "Register" : "Loading..."}</button>
-        {error && <span>Something went wrong!!</span>}
-        <span className='text-sm text-center'>Already have an account? Signin</span>
+        <button type='submit' className='bg-green-500 rounded p-2	border-0 text-xs' disabled={loading}>{!loading ? "Register" : "Loading..."}</button>        
+        <span className='text-sm text-center'>Already have an account? <Link href={'/dashboard/login'} className='underline text-blue-700'>Signin</Link></span>
         <div className='flex items-center justify-center'>
           <div className='border border-solid border-gray-300 flex-1'/>
           <span className='text-sm text-center px-2'>OR</span>

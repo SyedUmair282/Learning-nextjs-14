@@ -1,9 +1,11 @@
 "use client"
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {navbarLinks} from '@/types/allTypes';
 import Link from 'next/link';
 import styles from './navbar.module.scss';
 import Toggle from '../toggle/toggle';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 const links:navbarLinks[]=[
   {
     id: 1,
@@ -36,7 +38,18 @@ const links:navbarLinks[]=[
     url: "/dashboard"
   }
 ]
-const Navbar = () => {
+const Navbar = () => { 
+  const [loggedIn , setLoggedIn] = useState(false);
+  const router=useRouter();
+  const user_id = Cookies.get('user_id');
+  const user_name = Cookies.get('user_name');
+
+  useEffect(()=>{
+    if(user_id && user_name){
+      setLoggedIn(true);
+    }
+  },[user_id,user_name])
+
   return (
     <div className={`${styles.container} w-full flex flex-row items-center justify-between`}>
       <Link href={"/"} className={`font-bold text-2xl`}>Nextian</Link>
@@ -47,9 +60,16 @@ const Navbar = () => {
             <Link href={item.url} key={item.id}>{item.title}</Link>
           )
         })}
-        <button className={styles.logout}>
+        {loggedIn ? <button className={styles.logout} onClick={()=>{
+          Cookies.remove('user_id');
+          Cookies.remove('user_name');          
+          window.location.reload();          
+        }}>
           Logout
-        </button>
+        </button> :
+        <button className={styles.logout} onClick={()=>router.push('/dashboard/login')}>
+          Login
+        </button>}
       </div>
     </div>
   )

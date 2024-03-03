@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './page.module.scss'
 import Image from 'next/image'
+import Link from 'next/link'
 const About = () => {
   return (
     <div className={styles.container}>
@@ -24,8 +25,8 @@ const About = () => {
           <p className={`${styles.desc} mt-2`}>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum sapiente velit atque? Repudiandae id saepe voluptatibus libero quod labore, suscipit aspernatur reprehenderit eius quia unde facilis ad? Deserunt, eum fuga!</p>
           <p className={`${styles.desc} mt-2`}>- Creative Illustration</p>
           <p className={`${styles.desc} mt-2`}>- Dynamic Websites</p>
-          <p className={`${styles.desc} mt-2`}>- Fast and Handy Mobile Apps</p>
-          <button className={`${styles.contactBtn} w-max cursor-pointer mt-2`}>Contact</button>
+          <p className={`${styles.desc} mt-2 mb-2`}>- Fast and Handy Mobile Apps</p>
+          <Link href={"/contact"} className={`${styles.contactBtn} w-max cursor-pointer`}>Contact</Link>
         </div>
       </div>
     </div>
