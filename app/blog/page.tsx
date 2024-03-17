@@ -1,55 +1,45 @@
-import React from 'react'
+'use client'
+import React,{useEffect,useState} from 'react'
 import styles from './page.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getDatabase, ref, set, query, orderByChild, equalTo, get, push, child, onValue } from "firebase/database";
+import { app } from '@/firebase/config';
+import {blogsType} from '@/types/allTypes'
 const Blog = () => {
+  const [blogs,setBlogs] = useState<blogsType[]|null>(null);
+
+  useEffect(() => {
+    getAllBlogs();
+  }, [])
+
+  const getAllBlogs = async () => {
+    const db = getDatabase(app);
+    const allBlogs = ref(db, 'blogs');
+    onValue(allBlogs, (snapshot) => {
+      const blogsData:{ [key: string]: any } = snapshot.val();
+      if(blogsData !== null){        
+        setBlogs(Object.values(blogsData));
+      }
+    });
+  }
+  
   return (
     <div className={styles.container}>
-      <Link href={'/blog/1'} className={`flex flex-row gap-6 mb-6`}>
+      {blogs !== null && blogs?.length > 0 &&  blogs.map((value,index)=>{
+        return <Link href={`/blog/${value.id}`} key={index} className={`flex flex-row gap-6 mb-6`}>
         <div className={styles.imgContainer}>
-          <Image className={styles.img} src={'https://images.pexels.com/photos/126271/pexels-photo-126271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} alt='image' fill={true}/>
+          <Image className={styles.img} src={value.img} alt='image' fill={true}/>
         </div>
         <div className={styles.content}>
-          <span className='font-bold text-2xl mb-1'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id blanditiis sit. Id blanditiis sit.</span>
+          <span className='font-bold text-2xl mb-1'>{value.title}</span>
           <span className='font-light text-sm'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut dolores modi rem tenetur architecto. 
-            Dolore rem minus quisquam delectus perferendis voluptas, laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum. Laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum.
+            {value.desc}
           </span>
         </div>
       </Link>
-
-      <div className={`flex flex-row gap-6 mb-6`}>
-        <div className={styles.imgContainer}>
-          <Image className={styles.img} src={'https://images.pexels.com/photos/994605/pexels-photo-994605.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} alt='image' fill={true}/>
-        </div>
-        <div className={styles.content}>
-          <span className='font-bold text-2xl mb-1'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id blanditiis sit. Id blanditiis sit.</span>
-          <span className='font-light text-sm'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut dolores modi rem tenetur architecto. 
-            Dolore rem minus quisquam delectus perferendis voluptas, laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum. Laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum.
-          </span>
-        </div>
-      </div>
-      <div className={`flex flex-row gap-6 mb-6`}>
-        <div className={styles.imgContainer}>
-          <Image className={styles.img} src={'https://images.pexels.com/photos/715134/pexels-photo-715134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} alt='image' fill={true}/>
-        </div>
-        <div className={styles.content}>
-          <span className='font-bold text-2xl mb-1'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id blanditiis sit. Id blanditiis sit.</span>
-          <span className='font-light text-sm'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut dolores modi rem tenetur architecto. 
-            Dolore rem minus quisquam delectus perferendis voluptas, laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum. Laudantium hic animi, 
-            a officia, voluptatum adipisci iste. Earum.
-          </span>
-        </div>
-      </div>
-      
-      
+      }) 
+      }
     </div>
   )
 }

@@ -1,7 +1,10 @@
 import React from 'react'
 import styles from './page.module.scss'
 import Image from 'next/image'
-const BlogPost = () => {
+import { useRouter,useParams } from 'next/navigation'
+const BlogPost = ({params}:any) => {
+  // const router = useRouter();
+  console.log("check rou=>",params.id)
   return (
     <div className={styles.container}>
       <div>

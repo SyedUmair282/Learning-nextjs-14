@@ -14,3 +14,22 @@ export type userInfo={
     email?:string,
     password?:string
 }
+
+export type blogData={
+    title:string,
+    img:string,
+    category:string,
+    desc:string,
+    detail:string,
+}
+
+export type blogsType={
+    id:string,
+    title:string,
+    img:string,
+    category:string,
+    desc:string,
+    detail:string,
+    user_id: string,
+    user_name: string
+}

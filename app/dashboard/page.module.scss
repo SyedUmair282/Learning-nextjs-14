@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    gap: 10px;
     .leftContainer {
         flex: 1;
         max-height: 350px;
@@ -11,7 +11,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
             .imgCon {
                 position: relative;
                 height: 100px;
@@ -20,6 +20,30 @@
                     object-fit: cover;
                 }
             }
+        }
+        /* width */
+        &::-webkit-scrollbar {
+            background-color: transparent;
+            width: 8px;
+        }
+        /* Track */
+        // &::-webkit-scrollbar-track {
+        //     box-shadow: inset 0 0 5px grey;
+        //     border-radius: 10px;
+        // }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            visibility: hidden;
+        }
+        /* Handle on hover */
+        &:hover::-webkit-scrollbar-thumb,
+        &:active::-webkit-scrollbar-thumb,
+        &:focus::-webkit-scrollbar-thumb {
+            background-color: rgba(198, 195, 195, 0.3);
+            border-radius: 1rem;
+            visibility: visible;
         }
     }
     .right {
@@ -44,7 +68,8 @@
             color: #fff;
             border: none;
             font-size: 12px;
-            width: 60px;
+            max-width: 100px;
+            // width: 60px;
         }
     }
 }
