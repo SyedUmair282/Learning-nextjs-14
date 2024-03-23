@@ -33,3 +33,9 @@ export type blogsType={
     user_id: string,
     user_name: string
 }
+
+export type messageType={
+    name:string,
+    email:string,
+    message:string
+}

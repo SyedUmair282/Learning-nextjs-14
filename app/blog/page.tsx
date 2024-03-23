@@ -3,10 +3,10 @@ import React,{useEffect,useState} from 'react'
 import styles from './page.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getDatabase, ref, set, query, orderByChild, equalTo, get, push, child, onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { app } from '@/firebase/config';
 import {blogsType} from '@/types/allTypes'
-const Blog = () => {
+const Blog:React.FC = () => {
   const [blogs,setBlogs] = useState<blogsType[]|null>(null);
 
   useEffect(() => {

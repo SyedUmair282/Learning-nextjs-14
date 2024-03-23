@@ -3,17 +3,18 @@ import React, {useState} from 'react'
 import styles from './page.module.scss'
 import Image from 'next/image'
 import ContactImg from '@/public/contact.png'
-import { getDatabase, ref, set, query, orderByChild, equalTo, get, push, child } from "firebase/database";
+import { getDatabase, ref, set, push, child } from "firebase/database";
 import { app } from '@/firebase/config';
-const Contact = () => {
-  const [newMessage,setNewMessage] = useState<any>(null);
-  const handleChange = (e:any) => {
-    setNewMessage({...newMessage,[e.target.name]:e.target.value});
+import { messageType } from '@/types/allTypes'
+const Contact:React.FC = () => {
+  const [newMessage,setNewMessage] = useState<messageType|null>(null);
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage({...newMessage,[e.target.name]:e.target.value} as messageType);
   }
 
   const save = async (e:any) => {
     e.preventDefault();
-    if(newMessage.name && newMessage.email && newMessage.message){
+    if(newMessage?.name && newMessage?.email && newMessage?.message){
       const db = getDatabase(app);
       const newUserKey = push(child(ref(db), "messages")).key;
       await set(ref(db, "messages/" + newUserKey), {

@@ -39,7 +39,7 @@ const links:navbarLinks[]=[
   }
 ]
 const Navbar = () => { 
-  const [loggedIn , setLoggedIn] = useState(false);
+  const [loggedIn , setLoggedIn] = useState<boolean>(false);
   const router=useRouter();
   const user_id = Cookies.get('user_id');
   const user_name = Cookies.get('user_name');

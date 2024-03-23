@@ -1,23 +1,41 @@
-import React from 'react'
+'use client'
+import React, {useEffect, useState} from 'react'
 import styles from './page.module.scss'
 import Image from 'next/image'
-import { useRouter,useParams } from 'next/navigation'
-const BlogPost = ({params}:any) => {
-  // const router = useRouter();
-  console.log("check rou=>",params.id)
+import { getDatabase, ref, onValue } from "firebase/database";
+import { app } from '@/firebase/config';
+import { blogsType } from '@/types/allTypes';
+
+type param={
+  params:{
+    id:string
+  }
+}
+
+const BlogPost:React.FC<param> = (ctx:param) => {
+  const {params} = ctx;
+  const [user,setUser] = useState<blogsType|null>(null)
+
+  useEffect(() => {
+    const db = getDatabase(app);
+    const user = ref(db, "blogs/" + params.id);
+    onValue(user, (snapshot) => {
+      const data = snapshot.val();
+      setUser(data)
+    });
+  }, [])
+  
   return (
     <div className={styles.container}>
-      <div>
+      {user !== null && <div>
         <div className={styles.firstContainer}>
           <div className={styles.left}>
             <div className='font-bold text-3xl'>
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <p>{user.title}</p>
             </div>
             <div className='text-sm font-light'>
               <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nulla voluptas rerum id aspernatur,
-                animi culpa facilis vitae ducimus commodi minima quibusdam exercitationem aperiam aliquid enim ullam nostrum reprehenderit eligendi?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit?
+                {user.desc}
               </p>
             </div>
             <div className='flex flex-row items-center gap-2'>
@@ -27,38 +45,19 @@ const BlogPost = ({params}:any) => {
                 className={styles.avatar}
                 />
               </div>
-              <span className='text-xs'>John Doe</span>
+              <span className='text-xs'>{user.user_name}</span>
             </div>
           </div>
           <div className={styles.right}>
-            <Image className={styles.img} src={'https://images.pexels.com/photos/126271/pexels-photo-126271.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} alt='image' fill={true}/>
+            <Image className={styles.img} src={user.img} alt='image' fill={true}/>
           </div>
         </div>
         <div className={`${styles.secondContainer} font-light`}>
           <span>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nulla voluptas rerum id aspernatur,
-            animi culpa facilis vitae ducimus commodi minima quibusdam exercitationem aperiam aliquid enim ullam nostrum reprehenderit eligendi?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Maxime quod excepturi, eius similique dignissimos, quia tempore distinctio quo
-            maiores quas consequatur eveniet possimus consectetur inventore iste. Quos ipsa aperiam inventore!
-          </span>
-          <span>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nulla voluptas rerum id aspernatur,
-            animi culpa facilis vitae ducimus commodi minima quibusdam exercitationem aperiam aliquid enim ullam nostrum reprehenderit eligendi?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </span>
-          <span>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nulla voluptas rerum id aspernatur,
-            animi culpa facilis vitae ducimus commodi minima quibusdam exercitationem aperiam aliquid enim ullam nostrum reprehenderit eligendi?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Maxime quod excepturi, eius similique dignissimos, quia tempore distinctio quo
-            maiores quas consequatur eveniet possimus consectetur inventore iste. Quos ipsa aperiam inventore!
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. At nulla voluptas rerum id aspernatur,
-            animi culpa facilis vitae ducimus commodi minima quibusdam exercitationem aperiam aliquid enim ullam nostrum reprehenderit eligendi?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </span>
+            {user.detail}
+          </span>          
         </div>
-      </div>
+      </div>}
     </div>
   )
 }
